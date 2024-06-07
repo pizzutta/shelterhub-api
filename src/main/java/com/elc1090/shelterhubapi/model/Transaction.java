@@ -2,7 +2,7 @@ package com.elc1090.shelterhubapi.model;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity(name = "tb_transaction")
 public class Transaction {
@@ -10,7 +10,7 @@ public class Transaction {
     @GeneratedValue
     private Long id;
     @Column
-    private LocalDate date;
+    private LocalDateTime date;
     @Enumerated(EnumType.STRING)
     @Column
     private ActionsEnum action;
@@ -28,11 +28,11 @@ public class Transaction {
         this.id = id;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 

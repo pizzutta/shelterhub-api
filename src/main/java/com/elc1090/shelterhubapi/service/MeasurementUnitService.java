@@ -19,9 +19,9 @@ public class MeasurementUnitService {
     }
 
     public MeasurementUnit save(NameDTO data) {
-        MeasurementUnit item = new MeasurementUnit();
-        item.setName(data.name());
+        MeasurementUnit measurementUnit = new MeasurementUnit();
+        measurementUnit.setName(data.name());
 
-        return repository.save(item);
+        return repository.save(measurementUnit);
     }
 }

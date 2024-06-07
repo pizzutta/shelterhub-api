@@ -19,9 +19,9 @@ public class CategoryService {
     }
 
     public Category save(NameDTO data) {
-        Category item = new Category();
-        item.setName(data.name());
+        Category category = new Category();
+        category.setName(data.name());
 
-        return repository.save(item);
+        return repository.save(category);
     }
 }

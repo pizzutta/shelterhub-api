@@ -39,8 +39,8 @@ public class ItemController {
     }
 
     @PutMapping
-    public ResponseEntity update(@RequestBody Item category) {
-        service.update(category);
+    public ResponseEntity update(@RequestBody Item item) {
+        service.update(item);
         return ResponseEntity.ok().build();
     }
 

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ItemShelterService {
@@ -25,6 +26,11 @@ public class ItemShelterService {
         return repository.findAll();
     }
 
+    public ItemShelter findById(Long id) {
+        Optional<ItemShelter> optional = repository.findById(id);
+        return optional.orElse(null);
+    }
+
     public ItemShelter save(ItemShelterRegisterDTO data) {
         ItemShelter itemShelter = new ItemShelter();
         itemShelter.setItem(itemRepository.findById(data.itemId()).get());
@@ -36,5 +42,13 @@ public class ItemShelterService {
         shelterRepository.save(shelter);
 
         return itemShelter;
+    }
+
+    public void update(ItemShelter item){
+        repository.save(item);
+    }
+
+    public void deleteById(Long id){
+        repository.deleteById(id);
     }
 }

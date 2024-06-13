@@ -27,6 +27,11 @@ public class TransactionService {
         return repository.findAll();
     }
 
+    public Transaction findById(Long id) {
+        Optional<Transaction> optional = repository.findById(id);
+        return optional.orElse(null);
+    }
+
     public Transaction makeTransaction(TransactionRegisterDTO data) {
         Optional<ItemShelter> optional = itemShelterRepository.findById(data.itemShelterId());
 
@@ -57,5 +62,13 @@ public class TransactionService {
         transaction.setItemShelter(itemShelter);
 
         return repository.save(transaction);
+    }
+
+    public void update(Transaction transaction){
+        repository.save(transaction);
+    }
+
+    public void deleteById(Long id){
+        repository.deleteById(id);
     }
 }

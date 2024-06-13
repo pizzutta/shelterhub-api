@@ -1,5 +1,6 @@
 package com.elc1090.shelterhubapi.controller;
 
+import com.elc1090.shelterhubapi.dto.IdDTO;
 import com.elc1090.shelterhubapi.dto.TransactionRegisterDTO;
 import com.elc1090.shelterhubapi.model.Transaction;
 import com.elc1090.shelterhubapi.service.TransactionService;
@@ -25,9 +26,27 @@ public class TransactionController {
         return !transactions.isEmpty() ? ResponseEntity.ok(transactions) : ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity findById(@PathVariable(value = "id") Long id) {
+        Transaction transaction = service.findById(id);
+        return transaction != null ? ResponseEntity.ok(transaction) : ResponseEntity.notFound().build();
+    }
+
     @PostMapping
     public ResponseEntity makeTransaction(@RequestBody @Valid TransactionRegisterDTO data) {
         Transaction transaction = service.makeTransaction(data);
         return ResponseEntity.created(URI.create("/transaction/" + transaction.getId())).build();
+    }
+
+    @PutMapping
+    public ResponseEntity update(@RequestBody Transaction transaction) {
+        service.update(transaction);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping
+    public ResponseEntity deleteById(@RequestBody IdDTO data) {
+        service.deleteById(data.id());
+        return ResponseEntity.ok().build();
     }
 }

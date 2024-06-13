@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MeasurementUnitService {
@@ -18,10 +19,23 @@ public class MeasurementUnitService {
         return repository.findAll();
     }
 
+    public MeasurementUnit findById(Long id) {
+        Optional<MeasurementUnit> optional = repository.findById(id);
+        return optional.orElse(null);
+    }
+
     public MeasurementUnit save(NameDTO data) {
         MeasurementUnit measurementUnit = new MeasurementUnit();
         measurementUnit.setName(data.name());
 
         return repository.save(measurementUnit);
+    }
+
+    public void update(MeasurementUnit measurementUnit){
+        repository.save(measurementUnit);
+    }
+
+    public void deleteById(Long id){
+        repository.deleteById(id);
     }
 }

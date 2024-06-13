@@ -1,5 +1,6 @@
 package com.elc1090.shelterhubapi.controller;
 
+import com.elc1090.shelterhubapi.dto.IdDTO;
 import com.elc1090.shelterhubapi.dto.NameDTO;
 import com.elc1090.shelterhubapi.model.Category;
 import com.elc1090.shelterhubapi.service.CategoryService;
@@ -25,9 +26,27 @@ public class CategoryController {
         return !categories.isEmpty() ? ResponseEntity.ok(categories) : ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity findById(@PathVariable(value = "id") Long id) {
+        Category category = service.findById(id);
+        return category != null ? ResponseEntity.ok(category) : ResponseEntity.notFound().build();
+    }
+
     @PostMapping
     public ResponseEntity save(@RequestBody @Valid NameDTO data) {
         Category category = service.save(data);
         return ResponseEntity.created(URI.create("/category/" + category.getId())).build();
+    }
+
+    @PutMapping
+    public ResponseEntity update(@RequestBody Category category) {
+        service.update(category);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping
+    public ResponseEntity deleteById(@RequestBody IdDTO data) {
+        service.deleteById(data.id());
+        return ResponseEntity.ok().build();
     }
 }

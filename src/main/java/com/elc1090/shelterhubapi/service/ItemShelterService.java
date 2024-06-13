@@ -44,8 +44,8 @@ public class ItemShelterService {
         return itemShelter;
     }
 
-    public void update(ItemShelter item){
-        repository.save(item);
+    public void update(ItemShelter itemShelter){
+        repository.save(itemShelter);
     }
 
     public void deleteById(Long id){

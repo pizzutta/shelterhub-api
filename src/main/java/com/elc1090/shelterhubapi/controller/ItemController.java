@@ -1,5 +1,6 @@
 package com.elc1090.shelterhubapi.controller;
 
+import com.elc1090.shelterhubapi.dto.IdDTO;
 import com.elc1090.shelterhubapi.dto.ItemRegisterDTO;
 import com.elc1090.shelterhubapi.model.Item;
 import com.elc1090.shelterhubapi.service.ItemService;
@@ -25,9 +26,27 @@ public class ItemController {
         return !items.isEmpty() ? ResponseEntity.ok(items) : ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity findById(@PathVariable(value = "id") Long id) {
+        Item item = service.findById(id);
+        return item != null ? ResponseEntity.ok(item) : ResponseEntity.notFound().build();
+    }
+
     @PostMapping
     public ResponseEntity save(@RequestBody @Valid ItemRegisterDTO data) {
         Item item = service.save(data);
         return ResponseEntity.created(URI.create("/item/" + item.getId())).build();
+    }
+
+    @PutMapping
+    public ResponseEntity update(@RequestBody Item category) {
+        service.update(category);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping
+    public ResponseEntity deleteById(@RequestBody IdDTO data) {
+        service.deleteById(data.id());
+        return ResponseEntity.ok().build();
     }
 }

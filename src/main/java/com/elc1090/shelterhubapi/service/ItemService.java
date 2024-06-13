@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ItemService {
@@ -24,6 +25,11 @@ public class ItemService {
         return repository.findAll();
     }
 
+    public Item findById(Long id) {
+        Optional<Item> optional = repository.findById(id);
+        return optional.orElse(null);
+    }
+
     public Item save(ItemRegisterDTO data) {
         Item item = new Item();
         item.setName(data.name());
@@ -31,5 +37,13 @@ public class ItemService {
         item.setCategory(categoryRepository.findById(data.categoryId()).get());
 
         return repository.save(item);
+    }
+
+    public void update(Item item){
+        repository.save(item);
+    }
+
+    public void deleteById(Long id){
+        repository.deleteById(id);
     }
 }

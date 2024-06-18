@@ -1,6 +1,5 @@
 package com.elc1090.shelterhubapi.controller;
 
-import com.elc1090.shelterhubapi.dto.IdDTO;
 import com.elc1090.shelterhubapi.dto.ItemRegisterDTO;
 import com.elc1090.shelterhubapi.model.Item;
 import com.elc1090.shelterhubapi.service.ItemService;
@@ -44,9 +43,9 @@ public class ItemController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping
-    public ResponseEntity deleteById(@RequestBody IdDTO data) {
-        service.deleteById(data.id());
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteById(@PathVariable(value = "id") Long id) {
+        service.deleteById(id);
         return ResponseEntity.ok().build();
     }
 }

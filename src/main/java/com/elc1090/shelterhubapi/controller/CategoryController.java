@@ -38,8 +38,12 @@ public class CategoryController {
     }
 
     @PutMapping
-    public ResponseEntity update(@RequestBody Category category) {
-        service.update(category);
+    public ResponseEntity update(@RequestBody @Valid NameDTO data) {
+        if (data.id() == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        service.update(data);
         return ResponseEntity.ok().build();
     }
 

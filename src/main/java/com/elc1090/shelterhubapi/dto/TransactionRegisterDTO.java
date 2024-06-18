@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 
 public record TransactionRegisterDTO(
+        Long id,
         @NotBlank
         @Pattern(regexp = "^INPUT$|^OUTPUT$")
         String action,

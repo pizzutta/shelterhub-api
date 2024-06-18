@@ -44,8 +44,12 @@ public class TransactionController {
     }
 
     @PutMapping
-    public ResponseEntity update(@RequestBody Transaction transaction) {
-        service.update(transaction);
+    public ResponseEntity update(@RequestBody @Valid TransactionRegisterDTO data) {
+        if (data.id() == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        service.update(data);
         return ResponseEntity.ok().build();
     }
 

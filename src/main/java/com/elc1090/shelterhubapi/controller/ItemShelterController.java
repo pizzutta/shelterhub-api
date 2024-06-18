@@ -44,8 +44,12 @@ public class ItemShelterController {
     }
 
     @PutMapping
-    public ResponseEntity update(@RequestBody ItemShelter itemShelter) {
-        service.update(itemShelter);
+    public ResponseEntity update(@RequestBody @Valid ItemShelterRegisterDTO data) {
+        if (data.id() == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        service.update(data);
         return ResponseEntity.ok().build();
     }
 

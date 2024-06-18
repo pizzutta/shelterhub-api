@@ -32,18 +32,24 @@ public class ItemService {
 
     public Item save(ItemRegisterDTO data) {
         Item item = new Item();
-        item.setName(data.name());
-        item.setMeasurementUnit(measurementUnitRepository.findById(data.measurementUnitId()).get());
-        item.setCategory(categoryRepository.findById(data.categoryId()).get());
+        mountObject(data, item);
 
         return repository.save(item);
     }
 
-    public void update(Item item){
+    public void update(ItemRegisterDTO data) {
+        Item item = findById(data.id());
+        mountObject(data, item);
         repository.save(item);
     }
 
-    public void deleteById(Long id){
+    public void deleteById(Long id) {
         repository.deleteById(id);
+    }
+
+    private void mountObject(ItemRegisterDTO data, Item item) {
+        item.setName(data.name());
+        item.setMeasurementUnit(measurementUnitRepository.findById(data.measurementUnitId()).get());
+        item.setCategory(categoryRepository.findById(data.categoryId()).get());
     }
 }

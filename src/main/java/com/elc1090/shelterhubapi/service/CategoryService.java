@@ -31,11 +31,13 @@ public class CategoryService {
         return repository.save(category);
     }
 
-    public void update(Category category){
+    public void update(NameDTO data) {
+        Category category = findById(data.id());
+        category.setName(data.name());
         repository.save(category);
     }
 
-    public void deleteById(Long id){
+    public void deleteById(Long id) {
         repository.deleteById(id);
     }
 }

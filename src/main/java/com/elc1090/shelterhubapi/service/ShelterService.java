@@ -30,13 +30,7 @@ public class ShelterService {
 
     public Shelter save(ShelterRegisterDTO data) {
         Address address = new Address();
-        address.setStreet(data.address().street());
-        address.setNumber(data.address().number());
-        address.setComplement(data.address().complement());
-        address.setDistrict(data.address().district());
-        address.setCity(data.address().city());
-        address.setState(data.address().state());
-        address.setZipCode(data.address().zipCode());
+        mountAddress(data, address);
         addressRepository.save(address);
 
         Shelter shelter = new Shelter();
@@ -47,11 +41,28 @@ public class ShelterService {
         return repository.save(shelter);
     }
 
-    public void update(Shelter shelter){
+    public void update(ShelterRegisterDTO data) {
+        Shelter shelter = findById(data.id());
+        shelter.setName(data.name());
+
+        Address address = shelter.getAddress();
+        mountAddress(data, address);
+        addressRepository.save(address);
+
         repository.save(shelter);
     }
 
-    public void deleteById(Long id){
+    public void deleteById(Long id) {
         repository.deleteById(id);
+    }
+
+    private static void mountAddress(ShelterRegisterDTO data, Address address) {
+        address.setStreet(data.address().street());
+        address.setNumber(data.address().number());
+        address.setComplement(data.address().complement());
+        address.setDistrict(data.address().district());
+        address.setCity(data.address().city());
+        address.setState(data.address().state());
+        address.setZipCode(data.address().zipCode());
     }
 }

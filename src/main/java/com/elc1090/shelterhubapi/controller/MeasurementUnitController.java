@@ -38,8 +38,12 @@ public class MeasurementUnitController {
     }
 
     @PutMapping
-    public ResponseEntity update(@RequestBody MeasurementUnit measurementUnit) {
-        service.update(measurementUnit);
+    public ResponseEntity update(@RequestBody @Valid NameDTO data) {
+        if (data.id() == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        service.update(data);
         return ResponseEntity.ok().build();
     }
 

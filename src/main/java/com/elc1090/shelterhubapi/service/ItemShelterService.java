@@ -40,8 +40,7 @@ public class ItemShelterService {
 
     public ItemShelter save(ItemShelterRegisterDTO data) {
         ItemShelter itemShelter = new ItemShelter();
-        itemShelter.setItem(itemRepository.findById(data.itemId()).get());
-        itemShelter.setQuantity(data.quantity());
+        mountObject(data, itemShelter);
         repository.save(itemShelter);
 
         Shelter shelter = shelterRepository.findById(data.shelterId()).get();
@@ -51,11 +50,18 @@ public class ItemShelterService {
         return itemShelter;
     }
 
-    public void update(ItemShelter itemShelter) {
+    public void update(ItemShelterRegisterDTO data) {
+        ItemShelter itemShelter = findById(data.itemId());
+        mountObject(data, itemShelter);
         repository.save(itemShelter);
     }
 
     public void deleteById(Long id) {
         repository.deleteById(id);
+    }
+
+    private void mountObject(ItemShelterRegisterDTO data, ItemShelter itemShelter) {
+        itemShelter.setItem(itemRepository.findById(data.itemId()).get());
+        itemShelter.setQuantity(data.quantity());
     }
 }

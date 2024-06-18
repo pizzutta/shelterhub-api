@@ -31,11 +31,13 @@ public class MeasurementUnitService {
         return repository.save(measurementUnit);
     }
 
-    public void update(MeasurementUnit measurementUnit){
+    public void update(NameDTO data) {
+        MeasurementUnit measurementUnit = findById(data.id());
+        measurementUnit.setName(data.name());
         repository.save(measurementUnit);
     }
 
-    public void deleteById(Long id){
+    public void deleteById(Long id) {
         repository.deleteById(id);
     }
 }

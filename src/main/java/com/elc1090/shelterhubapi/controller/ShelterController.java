@@ -38,8 +38,12 @@ public class ShelterController {
     }
 
     @PutMapping
-    public ResponseEntity update(@RequestBody Shelter shelter) {
-        service.update(shelter);
+    public ResponseEntity update(@RequestBody @Valid ShelterRegisterDTO data) {
+        if (data.id() == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        service.update(data);
         return ResponseEntity.ok().build();
     }
 

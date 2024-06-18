@@ -38,8 +38,12 @@ public class ItemController {
     }
 
     @PutMapping
-    public ResponseEntity update(@RequestBody Item item) {
-        service.update(item);
+    public ResponseEntity update(@RequestBody @Valid ItemRegisterDTO data) {
+        if (data.id() == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        service.update(data);
         return ResponseEntity.ok().build();
     }
 

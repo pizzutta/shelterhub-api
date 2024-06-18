@@ -74,11 +74,14 @@ public class TransactionService {
         return repository.save(transaction);
     }
 
-    public void update(Transaction transaction){
+    public void update(TransactionRegisterDTO data) {
+        Transaction transaction = findById(data.id());
+        transaction.setAction(valueOf(data.action()));
+        transaction.setQuantity(data.quantity());
         repository.save(transaction);
     }
 
-    public void deleteById(Long id){
+    public void deleteById(Long id) {
         repository.deleteById(id);
     }
 }

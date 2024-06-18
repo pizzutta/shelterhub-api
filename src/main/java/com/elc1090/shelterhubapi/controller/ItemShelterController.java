@@ -32,6 +32,12 @@ public class ItemShelterController {
         return itemShelter != null ? ResponseEntity.ok(itemShelter) : ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/shelter/{shelter_id}")
+    public ResponseEntity findByShelterId(@PathVariable(value = "shelter_id") Long shelterId) {
+        List<ItemShelter> itemShelter = service.findByShelterId(shelterId);
+        return !itemShelter.isEmpty() ? ResponseEntity.ok(itemShelter) : ResponseEntity.notFound().build();
+    }
+
     @PostMapping
     public ResponseEntity save(@RequestBody @Valid ItemShelterRegisterDTO data) {
         ItemShelter itemShelter = service.save(data);

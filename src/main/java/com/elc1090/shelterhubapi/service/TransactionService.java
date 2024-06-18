@@ -6,7 +6,9 @@ import com.elc1090.shelterhubapi.model.ItemShelter;
 import com.elc1090.shelterhubapi.model.Transaction;
 import com.elc1090.shelterhubapi.repository.ItemShelterRepository;
 import com.elc1090.shelterhubapi.repository.TransactionRepository;
+import jakarta.persistence.criteria.Join;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,6 +32,14 @@ public class TransactionService {
     public Transaction findById(Long id) {
         Optional<Transaction> optional = repository.findById(id);
         return optional.orElse(null);
+    }
+
+    public List<Transaction> findByShelterId(Long shelterId) {
+        Specification<Transaction> specification = (root, query, criteriaBuilder) -> {
+            Join<ItemShelter, Transaction> join = root.join("itemShelter");
+            return criteriaBuilder.equal(join.get("shelterId"), shelterId);
+        };
+        return repository.findAll(specification);
     }
 
     public Transaction makeTransaction(TransactionRegisterDTO data) {

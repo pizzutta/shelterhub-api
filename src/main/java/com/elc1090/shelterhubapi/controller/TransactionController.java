@@ -32,6 +32,12 @@ public class TransactionController {
         return transaction != null ? ResponseEntity.ok(transaction) : ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/shelter/{shelter_id}")
+    public ResponseEntity findByShelterId(@PathVariable(value = "shelter_id") Long shelterId) {
+        List<Transaction> transactions = service.findByShelterId(shelterId);
+        return !transactions.isEmpty() ? ResponseEntity.ok(transactions) : ResponseEntity.notFound().build();
+    }
+
     @PostMapping
     public ResponseEntity makeTransaction(@RequestBody @Valid TransactionRegisterDTO data) {
         Transaction transaction = service.makeTransaction(data);

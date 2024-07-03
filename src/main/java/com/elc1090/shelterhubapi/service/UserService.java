@@ -1,7 +1,9 @@
 package com.elc1090.shelterhubapi.service;
 
 import com.elc1090.shelterhubapi.dto.UserRegisterDTO;
+import com.elc1090.shelterhubapi.model.Shelter;
 import com.elc1090.shelterhubapi.model.User;
+import com.elc1090.shelterhubapi.repository.ShelterRepository;
 import com.elc1090.shelterhubapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,6 +20,8 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private UserRepository repository;
+    @Autowired
+    private ShelterRepository shelterRepository;
 
     public User findById(Long id) {
         Optional<User> optional = repository.findById(id);
@@ -35,6 +39,9 @@ public class UserService implements UserDetailsService {
         User user = new User();
         mountObject(data, user);
         user.setPassword(encryptedPassword);
+
+        Shelter shelter = shelterRepository.getReferenceById(data.shelterId());
+        user.setShelter(shelter);
 
         this.save(user);
     }

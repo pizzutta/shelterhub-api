@@ -11,6 +11,7 @@ public record UserRegisterDTO(
         @NotBlank String name,
         @NotBlank @Size(min = 11, max = 11) String cpf,
         String password,
-        @NotNull @Pattern(regexp = "^ADMIN$|^FUNCTIONARY$") UserRole role
+        @NotNull @Pattern(regexp = "^ADMIN$|^FUNCTIONARY$") UserRole role,
+        @NotNull Long shelterId
 ) {
 }

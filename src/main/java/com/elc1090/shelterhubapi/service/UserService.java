@@ -5,12 +5,16 @@ import com.elc1090.shelterhubapi.model.User;
 import com.elc1090.shelterhubapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     @Autowired
     private UserRepository repository;
@@ -24,10 +28,18 @@ public class UserService {
         return repository.findByCpf(cpf);
     }
 
-    public User save(UserRegisterDTO data) {
+    public void register(UserRegisterDTO data) {
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encryptedPassword = passwordEncoder.encode(data.password());
+
         User user = new User();
         mountObject(data, user);
+        user.setPassword(encryptedPassword);
 
+        this.save(user);
+    }
+
+    private User save(User user) {
         return repository.save(user);
     }
 
@@ -46,5 +58,10 @@ public class UserService {
         user.setCpf(data.cpf());
         user.setPassword(data.password());
         user.setRole(data.role());
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return this.findDetailsByCpf(username);
     }
 }

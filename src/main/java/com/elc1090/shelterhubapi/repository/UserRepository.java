@@ -7,4 +7,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     UserDetails findByCpf(String cpf);
+
+    User findByCpfAndShelter_Id(String cpf, Long shelterId);
 }

@@ -1,7 +1,7 @@
 package com.elc1090.shelterhubapi.service;
 
 import com.elc1090.shelterhubapi.dto.UserRegisterDTO;
-import com.elc1090.shelterhubapi.model.Shelter;
+import com.elc1090.shelterhubapi.dto.VolunteerLoginDTO;
 import com.elc1090.shelterhubapi.model.User;
 import com.elc1090.shelterhubapi.repository.ShelterRepository;
 import com.elc1090.shelterhubapi.repository.UserRepository;
@@ -14,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+
+import static com.elc1090.shelterhubapi.model.UserRole.VOLUNTEER;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -41,6 +43,21 @@ public class UserService implements UserDetailsService {
         user.setPassword(encryptedPassword);
 
         this.save(user);
+    }
+
+    public User registerVolunteer(VolunteerLoginDTO data) {
+        User user = repository.findByCpfAndShelter_Id(data.cpf(), data.shelterId());
+        if (user != null) {
+            return user;
+        }
+
+        user = new User();
+        user.setName(data.name());
+        user.setCpf(data.cpf());
+        user.setRole(VOLUNTEER);
+        user.setShelter(shelterRepository.getReferenceById(data.shelterId()));
+
+        return this.save(user);
     }
 
     private User save(User user) {

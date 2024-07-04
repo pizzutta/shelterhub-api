@@ -4,6 +4,7 @@ package com.elc1090.shelterhubapi.controller;
 import com.elc1090.shelterhubapi.dto.LoginDTO;
 import com.elc1090.shelterhubapi.dto.LoginResponseDTO;
 import com.elc1090.shelterhubapi.dto.UserRegisterDTO;
+import com.elc1090.shelterhubapi.dto.VolunteerLoginDTO;
 import com.elc1090.shelterhubapi.model.User;
 import com.elc1090.shelterhubapi.security.TokenService;
 import com.elc1090.shelterhubapi.service.UserService;
@@ -34,6 +35,19 @@ public class AuthenticationController {
         Authentication auth = this.authenticationManager.authenticate(usernamePassword);
 
         User user = (User) auth.getPrincipal();
+        String token = tokenService.generateToken(user);
+        LoginResponseDTO responseDTO = new LoginResponseDTO(user.getId(), user.getCpf(), user.getRole().toString(), token);
+
+        return ResponseEntity.ok(responseDTO);
+    }
+
+    @PostMapping("/volunteer-login")
+    public ResponseEntity volunteerLogin(@RequestBody @Valid VolunteerLoginDTO data) {
+        User user = service.registerVolunteer(data);
+
+        UsernamePasswordAuthenticationToken username = new UsernamePasswordAuthenticationToken(user, null);
+        this.authenticationManager.authenticate(username);
+
         String token = tokenService.generateToken(user);
         LoginResponseDTO responseDTO = new LoginResponseDTO(user.getId(), user.getCpf(), user.getRole().toString(), token);
 

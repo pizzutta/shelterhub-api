@@ -49,7 +49,7 @@ public class ItemService {
 
     private void mountObject(ItemRegisterDTO data, Item item) {
         item.setName(data.name());
-        item.setMeasurementUnit(measurementUnitRepository.findById(data.measurementUnitId()).get());
-        item.setCategory(categoryRepository.findById(data.categoryId()).get());
+        item.setMeasurementUnit(measurementUnitRepository.getReferenceById(data.measurementUnitId()));
+        item.setCategory(categoryRepository.getReferenceById(data.categoryId()));
     }
 }

@@ -40,9 +40,6 @@ public class UserService implements UserDetailsService {
         mountObject(data, user);
         user.setPassword(encryptedPassword);
 
-        Shelter shelter = shelterRepository.getReferenceById(data.shelterId());
-        user.setShelter(shelter);
-
         this.save(user);
     }
 
@@ -65,6 +62,7 @@ public class UserService implements UserDetailsService {
         user.setCpf(data.cpf());
         user.setPassword(data.password());
         user.setRole(data.role());
+        user.setShelter(shelterRepository.getReferenceById(data.shelterId()));
     }
 
     @Override

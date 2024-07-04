@@ -61,7 +61,7 @@ public class ItemShelterService {
     }
 
     private void mountObject(ItemShelterRegisterDTO data, ItemShelter itemShelter) {
-        itemShelter.setItem(itemRepository.findById(data.itemId()).get());
+        itemShelter.setItem(itemRepository.getReferenceById(data.itemId()));
         itemShelter.setQuantity(data.quantity());
     }
 }

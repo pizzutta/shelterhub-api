@@ -19,6 +19,9 @@ public class Transaction {
     @ManyToOne
     @JoinColumn(name = "item_shelter_id")
     private ItemShelter itemShelter;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Long getId() {
         return id;
@@ -58,5 +61,13 @@ public class Transaction {
 
     public void setItemShelter(ItemShelter itemShelter) {
         this.itemShelter = itemShelter;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

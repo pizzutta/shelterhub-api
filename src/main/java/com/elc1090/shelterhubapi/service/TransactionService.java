@@ -4,6 +4,7 @@ import com.elc1090.shelterhubapi.dto.TransactionRegisterDTO;
 import com.elc1090.shelterhubapi.model.ActionsEnum;
 import com.elc1090.shelterhubapi.model.ItemShelter;
 import com.elc1090.shelterhubapi.model.Transaction;
+import com.elc1090.shelterhubapi.model.User;
 import com.elc1090.shelterhubapi.repository.ItemShelterRepository;
 import com.elc1090.shelterhubapi.repository.TransactionRepository;
 import jakarta.persistence.criteria.Join;
@@ -16,6 +17,7 @@ import java.util.Optional;
 
 import static com.elc1090.shelterhubapi.model.ActionsEnum.valueOf;
 import static java.time.LocalDateTime.now;
+import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
 @Service
 public class TransactionService {
@@ -65,11 +67,14 @@ public class TransactionService {
     }
 
     private Transaction save(TransactionRegisterDTO data, ItemShelter itemShelter) {
+        User user = (User) getContext().getAuthentication().getPrincipal();
+
         Transaction transaction = new Transaction();
         transaction.setDate(now());
         transaction.setAction(valueOf(data.action()));
         transaction.setQuantity(data.quantity());
         transaction.setItemShelter(itemShelter);
+        transaction.setUser(user);
 
         return repository.save(transaction);
     }

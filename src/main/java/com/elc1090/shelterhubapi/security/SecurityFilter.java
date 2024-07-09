@@ -35,6 +35,7 @@ public class SecurityFilter extends OncePerRequestFilter {
             getContext().setAuthentication(authentication);
         }
 
+        response.addHeader("Access-Control-Allow-Headers", "*");
         response.addHeader("Access-Control-Allow-Origin", "*");
         response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
 

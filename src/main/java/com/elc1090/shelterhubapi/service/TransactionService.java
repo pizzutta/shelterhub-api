@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-import static com.elc1090.shelterhubapi.model.ActionsEnum.valueOf;
 import static java.time.LocalDateTime.now;
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
@@ -49,7 +48,7 @@ public class TransactionService {
 
         if (optional.isPresent()) {
             ItemShelter itemShelter = optional.get();
-            ActionsEnum action = valueOf(data.action());
+            ActionsEnum action = data.action();
             int quantity = itemShelter.getQuantity();
 
             if (action.equals(ActionsEnum.INPUT)) {
@@ -71,7 +70,7 @@ public class TransactionService {
 
         Transaction transaction = new Transaction();
         transaction.setDate(now());
-        transaction.setAction(valueOf(data.action()));
+        transaction.setAction(data.action());
         transaction.setQuantity(data.quantity());
         transaction.setItemShelter(itemShelter);
         transaction.setUser(user);
@@ -81,7 +80,7 @@ public class TransactionService {
 
     public void update(TransactionRegisterDTO data) {
         Transaction transaction = findById(data.id());
-        transaction.setAction(valueOf(data.action()));
+        transaction.setAction(data.action());
         transaction.setQuantity(data.quantity());
         repository.save(transaction);
     }

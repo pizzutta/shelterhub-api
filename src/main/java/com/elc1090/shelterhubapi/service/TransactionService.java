@@ -43,7 +43,7 @@ public class TransactionService {
         return repository.findAll(specification);
     }
 
-    public Transaction makeTransaction(TransactionRegisterDTO data) {
+    public Transaction makeTransaction(TransactionRegisterDTO data, Boolean isBetweenShelters) {
         Optional<ItemShelter> optional = itemShelterRepository.findById(data.itemShelterId());
 
         if (optional.isPresent()) {
@@ -59,13 +59,13 @@ public class TransactionService {
 
             itemShelter.setQuantity(quantity);
             itemShelterRepository.save(itemShelter);
-            return this.save(data, itemShelter);
+            return this.save(data, itemShelter, isBetweenShelters);
         } else {
             return null;
         }
     }
 
-    private Transaction save(TransactionRegisterDTO data, ItemShelter itemShelter) {
+    private Transaction save(TransactionRegisterDTO data, ItemShelter itemShelter, Boolean isBetweenShelters) {
         User user = (User) getContext().getAuthentication().getPrincipal();
 
         Transaction transaction = new Transaction();
@@ -74,6 +74,9 @@ public class TransactionService {
         transaction.setQuantity(data.quantity());
         transaction.setItemShelter(itemShelter);
         transaction.setUser(user);
+//        if (isBetweenShelters != null) {
+            transaction.setBetweenShelters(isBetweenShelters);
+//        }
 
         return repository.save(transaction);
     }

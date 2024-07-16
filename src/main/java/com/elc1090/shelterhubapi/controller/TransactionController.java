@@ -39,7 +39,7 @@ public class TransactionController {
 
     @PostMapping
     public ResponseEntity makeTransaction(@RequestBody @Valid TransactionRegisterDTO data) {
-        Transaction transaction = service.makeTransaction(data);
+        Transaction transaction = service.makeTransaction(data, false);
         return ResponseEntity.created(URI.create("/transaction/" + transaction.getId())).build();
     }
 

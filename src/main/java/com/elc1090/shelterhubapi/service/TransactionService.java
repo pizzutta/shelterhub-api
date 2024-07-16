@@ -1,5 +1,6 @@
 package com.elc1090.shelterhubapi.service;
 
+import com.elc1090.shelterhubapi.dto.TransactionFilter;
 import com.elc1090.shelterhubapi.dto.TransactionRegisterDTO;
 import com.elc1090.shelterhubapi.model.ActionsEnum;
 import com.elc1090.shelterhubapi.model.ItemShelter;
@@ -8,10 +9,12 @@ import com.elc1090.shelterhubapi.model.User;
 import com.elc1090.shelterhubapi.repository.ItemShelterRepository;
 import com.elc1090.shelterhubapi.repository.TransactionRepository;
 import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,8 +29,17 @@ public class TransactionService {
     @Autowired
     private ItemShelterRepository itemShelterRepository;
 
-    public List<Transaction> findAll() {
-        return repository.findAll();
+    public List<Transaction> findAll(TransactionFilter filter) {
+        return repository.findAll((root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            if (filter.initialDate() != null) {
+                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("date"), filter.initialDate()));
+            }
+            if (filter.finalDate() != null) {
+                predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("date"), filter.finalDate()));
+            }
+            return criteriaBuilder.and(predicates.toArray(Predicate[]::new));
+        });
     }
 
     public Transaction findById(Long id) {
@@ -74,9 +86,7 @@ public class TransactionService {
         transaction.setQuantity(data.quantity());
         transaction.setItemShelter(itemShelter);
         transaction.setUser(user);
-//        if (isBetweenShelters != null) {
-            transaction.setBetweenShelters(isBetweenShelters);
-//        }
+        transaction.setBetweenShelters(isBetweenShelters);
 
         return repository.save(transaction);
     }

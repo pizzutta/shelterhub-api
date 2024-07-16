@@ -1,5 +1,6 @@
 package com.elc1090.shelterhubapi.controller;
 
+import com.elc1090.shelterhubapi.dto.TransactionFilter;
 import com.elc1090.shelterhubapi.dto.TransactionRegisterDTO;
 import com.elc1090.shelterhubapi.model.Transaction;
 import com.elc1090.shelterhubapi.service.TransactionService;
@@ -20,8 +21,8 @@ public class TransactionController {
     private TransactionService service;
 
     @GetMapping
-    public ResponseEntity findAll() {
-        List<Transaction> transactions = service.findAll();
+    public ResponseEntity findAll(TransactionFilter filter) {
+        List<Transaction> transactions = service.findAll(filter);
         return !transactions.isEmpty() ? ResponseEntity.ok(transactions) : ResponseEntity.noContent().build();
     }
 

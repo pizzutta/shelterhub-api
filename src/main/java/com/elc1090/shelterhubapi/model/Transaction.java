@@ -22,6 +22,8 @@ public class Transaction {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+    @Column(name = "is_between_shelters")
+    private Boolean isBetweenShelters = false;
 
     public Long getId() {
         return id;
@@ -69,5 +71,13 @@ public class Transaction {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Boolean getBetweenShelters() {
+        return isBetweenShelters;
+    }
+
+    public void setBetweenShelters(Boolean betweenShelters) {
+        isBetweenShelters = betweenShelters;
     }
 }
